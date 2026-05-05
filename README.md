@@ -1,2 +1,2 @@
-# Media-autp-bot
+# Media-auto-bot
 Bot auto media
