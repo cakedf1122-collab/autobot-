@@ -14,7 +14,7 @@ CHANNEL_ID = "-1003796754985"
 LOGO_FILE = "logo.png"
 
 # --- CONFIG KEDALUWARSA ---
-TANGGAL_EXPIRED = datetime(2026, 4, 27)
+TANGGAL_EXPIRED = datetime(2026, 5, 27)
 PESAN_EXPIRED = "<b>Script Expired. Perbarui Telegram Premium📢</b>"
 
 def cek_status_expired():
