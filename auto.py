@@ -8,27 +8,43 @@ from wordpress_xmlrpc import Client, WordPressPost
 from wordpress_xmlrpc.methods.posts import NewPost, GetPost
 from wordpress_xmlrpc.methods.media import UploadFile
 
+# --- FORCE ASIA/JAKARTA TIMEZONE ---
+try:
+    import pytz
+    local_tz = pytz.timezone("Asia/Jakarta")
+except ImportError:
+    # Jika pytz belum terinstall di Termux, kita buat fallback manual GMT+7
+    from datetime import timezone, timedelta
+    local_tz = timezone(timedelta(hours=7))
+
 # --- KONFIGURASI UTAMA ---
 BOT_TOKEN = "8556458330:AAEzwAgfzY7hTrawvCnfdtH3SDpO5WY0cho"
 CHANNEL_ID = "-1003796754985"
 LOGO_FILE = "logo.png"
 
 # --- CONFIG KEDALUWARSA ---
-# Diatur ke akhir hari tanggal 27 agar hitungan mundurnya pas
-TANGGAL_EXPIRED = datetime(2026, 5, 27, 23, 59, 59)
+# Tanggal expired disuntikkan zona waktu lokal Jakarta/WIB
+TANGGAL_EXPIRED = datetime(2026, 5, 27, 23, 59, 59).replace(tzinfo=None)
+# Kita buat versi sadar zona waktu untuk perbandingan real-time
+if hasattr(local_tz, 'localize'):
+    TANGGAL_EXPIRED_TZ = local_tz.localize(datetime(2026, 5, 27, 23, 59, 59))
+else:
+    TANGGAL_EXPIRED_TZ = datetime(2026, 5, 27, 23, 59, 59, tzinfo=local_tz)
+
 PESAN_EXPIRED = "<b>Script Expiret. Perbarui Telegram Premium📢</b>"
 
 def cek_status_expired():
     """Fungsi untuk mengecek apakah waktu sekarang sudah lewat batas"""
-    return datetime.now() > TANGGAL_EXPIRED
+    sekarang = datetime.now(local_tz)
+    return sekarang > TANGGAL_EXPIRED_TZ
 
 def get_pesan_pengingat_realtime():
-    """Fungsi hitung mundur real-time sampai hitungan detik"""
-    sekarang = datetime.now()
-    if sekarang > TANGGAL_EXPIRED:
+    """Fungsi hitung mundur real-time mengikuti Jam HP / WIB"""
+    sekarang = datetime.now(local_tz)
+    if sekarang > TANGGAL_EXPIRED_TZ:
         return PESAN_EXPIRED
         
-    selisih = TANGGAL_EXPIRED - sekarang
+    selisih = TANGGAL_EXPIRED_TZ - sekarang
     
     # Pecah selisih waktu menjadi Hari, Jam, Menit, dan Detik
     hari = selisih.days
@@ -38,9 +54,8 @@ def get_pesan_pengingat_realtime():
     tgl_teks = TANGGAL_EXPIRED.strftime("%d %B %Y pukul %H:%M:%S")
     waktu_hitunghundur = f"<b>{hari} Hari, {jam} Jam, {menit} Menit, {detik} Detik</b>"
     
-    # Berikan tanda peringatan khusus jika waktu sisa 3 hari atau kurang
     if hari <= 3:
-        return f"⚠️ <b>PERINGATAN PREMIUM:</b>\nMasa aktif bot sisa: {waktu_hitunghundur}\n<i>Batas akhir: {tgl_teks}</i>\n\n"
+        return f"⚠️ <b>PERINGATAN PREMIUM:</b>\nMasa aktif bot sisa: {waktu_hitunghundur}\n<i>Batas akhir: {tgl_teks} WIB</i>\n\n"
     else:
         return f"🟢 <b>STATUS AKTIF:</b>\nMasa aktif bot sisa: {waktu_hitunghundur}\n\n"
 
@@ -235,12 +250,8 @@ def callback_exec(call):
     if os.path.exists(path_foto): os.remove(path_foto)
     del user_data[chat_id]
     
-    # --- FITUR PENGINGAT REAL-TIME SETELAH SELESAI POSTING ---
     info_status = get_pesan_pengingat_realtime()
     bot.send_message(chat_id, f"✅ <b>Tugas Selesai!</b>\n\n📢 {info_status}Silakan update / perpanjang <b>Telegram Premium</b> Anda agar bot tetap aktif.", parse_mode='HTML')
 
 if __name__ == "__main__":
-    if cek_status_expired():
-        print("⚠️ Perhatian: Script ini sudah melewati batas tanggal di GitHub, bot tetap berjalan di Termux khusus untuk mengirim pesan EXPIRED ke pengguna Telegram.")
-        
     bot.infinity_polling()
