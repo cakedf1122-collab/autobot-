@@ -9,7 +9,7 @@ from wordpress_xmlrpc.methods.posts import NewPost, GetPost
 from wordpress_xmlrpc.methods.media import UploadFile
 
 # --- KONFIGURASI UTAMA ---
-BOT_TOKEN = "8556458330:AAEzwAgfzY7hTrawvCnfdtH3SDpO5WY0cho"
+BOT_TOKEN = "8228386915:AAFHXv_l_ECL-BvqVR10qwZpWAvjMC5PxNI"
 CHANNEL_ID = "-1003796754985"
 LOGO_FILE = "logo.png"
 
