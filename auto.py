@@ -14,8 +14,8 @@ CHANNEL_ID = "-1003796754985"
 LOGO_FILE = "logo.png"
 
 # --- CONFIG KEDALUWARSA ---
-TANGGAL_EXPIRED = datetime(2026, 5, 27)
-PESAN_EXPIRED = "❌ Script ini telah kedaluwarsa pada 27 Mei 2026. Silahkan gunakan telegram premium untuk melanjutkan."
+TANGGAL_EXPIRED = datetime(2026, 5, 21)
+PESAN_EXPIRED = "❌ Script Expired ! Silahkan gunakan telegram premium untuk melanjutkan."
 
 def cek_status_expired():
     """Fungsi pembantu untuk mengecek apakah waktu sekarang sudah lewat batas"""
