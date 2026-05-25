@@ -1,7 +1,7 @@
 import telebot
 from telebot import types
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 import sys
 from PIL import Image
 from wordpress_xmlrpc import Client, WordPressPost
@@ -15,7 +15,7 @@ LOGO_FILE = "logo.png"
 
 # --- CONFIG KEDALUWARSA ---
 TANGGAL_EXPIRED = datetime(2026, 5, 27)
-PESAN_EXPIRED = "<b>Script Expired. Perbarui Telegram Premium📢</b>"
+PESAN_EXPIRED = "<b>Script Expiret. Perbarui Telegram Premium📢</b>"
 
 def cek_status_expired():
     """Fungsi untuk mengecek apakah waktu sekarang sudah lewat batas"""
@@ -101,13 +101,27 @@ def start(message):
         bot.send_message(message.chat.id, PESAN_EXPIRED, parse_mode='HTML')
         return
 
-    # Hitung info masa aktif untuk pesan awal
     tgl_teks = TANGGAL_EXPIRED.strftime("%d %B %Y")
+    
+    # --- LOGIKA HITUNG SISA HARI otomatis ---
+    hari_ini = datetime.now().date()
+    hari_expired = TANGGAL_EXPIRED.date()
+    sisa_hari = (hari_expired - hari_ini).days
+    
+    # Tentukan teks informasi masa berlaku berdasarkan jumlah hari
+    if sisa_hari <= 0:
+        # Penanganan jika pas di hari H sebelum jamnya habis
+        info_status = "⚠️ <b>PERINGATAN:</b> Masa berlaku Telegram Premium Anda <b>HABIS HARI INI</b>! Segera perbarui.\n\n"
+    elif sisa_hari in [1, 2, 3]:
+        info_status = f"⚠️ <b>PERINGATAN:</b> Masa berlaku Telegram Premium Anda tinggal <b>{sisa_hari} hari lagi</b>! Segera perbarui.\n\n"
+    else:
+        info_status = f"🟢 <b>Masa Aktif:</b> Berlaku sisa <b>{sisa_hari} hari lagi</b>.\n\n"
     
     bot.send_message(
         message.chat.id,
         f"🪩 <b>AUTOMEDIALAMPUNG-BOT READY!</b>\n"
-        f"📅 <i>Masa berlaku script sampai: {tgl_teks}</i>\n\n"
+        f"📅 <i>Batas script: {tgl_teks}</i>\n"
+        f"{info_status}"
         f"Silakan kirim foto untuk mulai posting ke WordPress, atau buka portal berita melalui menu di bawah:🪩✍️",
         parse_mode='HTML',
         reply_markup=get_main_menu_markup()
