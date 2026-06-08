@@ -94,7 +94,7 @@ def proses_watermark(image_path):
 def get_main_menu_markup():
     markup = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
     btn1 = types.KeyboardButton("🌐 Info Publik", web_app=types.WebAppInfo(url="https://infopublik.news"))
-    btn2 = types.KeyboardButton("🌐 Brantas Tuntas", web_app=types.WebAppInfo(url="https://gemaindonesia.com"))
+    btn2 = types.KeyboardButton("🌐 Gema Indonesia", web_app=types.WebAppInfo(url="https://gemaindonesia.com"))
     btn3 = types.KeyboardButton("🌐 Media Harian", web_app=types.WebAppInfo(url="https://mediaharianindonesia.com"))
     btn4 = types.KeyboardButton("🌐 Media Viral", web_app=types.WebAppInfo(url="https://mediaviralnusantara.com"))
     markup.add(btn1, btn2, btn3, btn4)
