@@ -65,7 +65,7 @@ bot = telebot.TeleBot(BOT_TOKEN)
 WEBSITES = {
     "Infopublik.news": {"url": "https://www.infopublik.news/xmlrpc.php", "user": "autobot_infopublik.news", "pass": "oOjz DcNS MEYN 55Zi BSmH zSJK"},
     "Mediaviralnusantara.com": {"url": "https://www.mediaviralnusantara.com/xmlrpc.php", "user": "autobot_mediaviralnusantara.com", "pass": "D15U TAh6 KvY7 DJyV WBDO 3SEt"},
-    "Brantastuntas.com": {"url": "https://www.brantastuntas.com/xmlrpc.php", "user": "autobot_brantastuntas.com", "pass": "b0BZ zKDO YwDG QWw2 iKQh XJTT"},
+    "Gemaindonesia.com": {"url": "https://www.gemaindonesia.com/xmlrpc.php", "user": "autobot_gemaindonesia.com", "pass": "tRhh WP0K A56l dfNt KNGq LQ96"},
     "Mediaharianindonesia.com": {"url": "https://www.mediaharianindonesia.com/xmlrpc.php", "user": "autobot_mediaharianindonesia.com", "pass": "b7ev D39V CVLS 5ALI kFIF 4tfO"}
 }
 
@@ -94,7 +94,7 @@ def proses_watermark(image_path):
 def get_main_menu_markup():
     markup = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
     btn1 = types.KeyboardButton("🌐 Info Publik", web_app=types.WebAppInfo(url="https://infopublik.news"))
-    btn2 = types.KeyboardButton("🌐 Brantas Tuntas", web_app=types.WebAppInfo(url="https://brantastuntas.com"))
+    btn2 = types.KeyboardButton("🌐 Brantas Tuntas", web_app=types.WebAppInfo(url="https://gemaindonesia.com"))
     btn3 = types.KeyboardButton("🌐 Media Harian", web_app=types.WebAppInfo(url="https://mediaharianindonesia.com"))
     btn4 = types.KeyboardButton("🌐 Media Viral", web_app=types.WebAppInfo(url="https://mediaviralnusantara.com"))
     markup.add(btn1, btn2, btn3, btn4)
